@@ -43,6 +43,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         cell.textLabel?.text = breedsArr[indexPath.row].localizedCapitalized
         
+        //Image Downloading
+        //Review Operations for resources efficiency
+        //Closure for random image
+        
 //        let sUrl = "https://dog.ceo/api/breed/"+breedsArr[indexPath.row]+"/images"
 //        let nsurl = NSURL(string: sUrl)
 //        let imgData = NSData(contentsOfURL: nsurl!)
