@@ -15,6 +15,7 @@
 		36968BBC20733AEF00919456 /* DogAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36968BBB20733AEF00919456 /* DogAPITests.swift */; };
 		36968BC720733BF100919456 /* Breeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36968BC620733BF100919456 /* Breeds.swift */; };
 		36968BCB207348AB00919456 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36968BCA207348AB00919456 /* TableViewCell.swift */; };
+		36968BCD207407F100919456 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36968BCC207407F100919456 /* Photos.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		36968BBD20733AEF00919456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36968BC620733BF100919456 /* Breeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breeds.swift; sourceTree = "<group>"; };
 		36968BCA207348AB00919456 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		36968BCC207407F100919456 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				36968BA820733AEE00919456 /* ViewController.swift */,
 				36968BCA207348AB00919456 /* TableViewCell.swift */,
 				36968BC620733BF100919456 /* Breeds.swift */,
+				36968BCC207407F100919456 /* Photos.swift */,
 				36968BAA20733AEE00919456 /* Main.storyboard */,
 				36968BAD20733AEE00919456 /* Assets.xcassets */,
 				36968BAF20733AEE00919456 /* LaunchScreen.storyboard */,
@@ -208,6 +211,7 @@
 				36968BA920733AEE00919456 /* ViewController.swift in Sources */,
 				36968BCB207348AB00919456 /* TableViewCell.swift in Sources */,
 				36968BC720733BF100919456 /* Breeds.swift in Sources */,
+				36968BCD207407F100919456 /* Photos.swift in Sources */,
 				36968BA720733AEE00919456 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

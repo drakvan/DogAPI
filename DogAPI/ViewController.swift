@@ -8,49 +8,92 @@
 
 import UIKit
 
+extension UIImageView {
+    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() {
+                self.image = image
+            }
+            }.resume()
+    }
+    func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloadedFrom(url: url, contentMode: mode)
+    }
+}
+
+class DogBreed{
+    var name: String!
+    var arrPhotos: [String]!
+    var randomN: Int
+    
+    init(nm: String, ph: [String], n: Int){
+        name = nm
+        arrPhotos = ph
+        randomN = n
+    }
+}
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
     var breeds: Breeds!
-    var breedsArr: [String]! = []
+    var arrPhotos: [String]! = []
+    
+    var breedsArr: [DogBreed]! = []
+    
+    func randomNumber(size: Int)->Int{
+        let n = Int(arc4random_uniform(UInt32(size)))
+        
+        return Int(n)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         downloadJSON {
-            print(self.breeds.message.count)
+//            self.breedsArr = self.breeds.message
+            for breed in self.breeds.message{
+                self.breedsArr.append(DogBreed(nm: breed, ph: [], n: 0))
+            }
             
-            self.breedsArr = self.breeds.message
+            for db in self.breedsArr{
+                self.downloadJSONPhotos(db: db)
+            }
+            
             self.tableView.reloadData()
         }
-        
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
-        
         return breedsArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-//        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
         
-        cell.textLabel?.text = breedsArr[indexPath.row].localizedCapitalized
+        cell.tlBreed.text = breedsArr[indexPath.row].name.localizedCapitalized
         
-        //Image Downloading
-        //Review Operations for resources efficiency
-        //Closure for random image
         
-//        let sUrl = "https://dog.ceo/api/breed/"+breedsArr[indexPath.row]+"/images"
-//        let nsurl = NSURL(string: sUrl)
-//        let imgData = NSData(contentsOfURL: nsurl!)
-//        cell.oImagen.image = UIImage(data: imgData!)
+        //Check if the arrPhotos is already downloaded
+        if(breedsArr[indexPath.row].arrPhotos.count>0){
+            
+            let n = breedsArr[indexPath.row].randomN
+            let urlString = URL(string: breedsArr[indexPath.row].arrPhotos[n])
+            
+            cell.imagePhoto.downloadedFrom(url: urlString!)
+        }
         
         return cell
     }
@@ -69,7 +112,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if error == nil{
                 do{
                     self.breeds = try JSONDecoder().decode(Breeds.self, from: data!)
-//                    print(self.breeds.message)
                     
                     DispatchQueue.main.async{
                         completed()
@@ -78,6 +120,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     print("JSON Error")
                 }
             }
+        }.resume()
+    }
+    
+    func downloadJSONPhotos(db: DogBreed){
+        
+        let url = URL(string: "https://dog.ceo/api/breed/" + db.name + "/images")
+        
+        URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            
+            if error == nil{
+                do{
+                    let photosMess = try JSONDecoder().decode(Photos.self, from: data!)
+                    self.arrPhotos = photosMess.message
+                    db.arrPhotos = photosMess.message
+                    
+                    db.randomN = self.randomNumber(size: photosMess.message.count)
+                }catch{
+                    print("JSON Error")
+                }
+            }else {print("If Error")}
         }.resume()
     }
 }
